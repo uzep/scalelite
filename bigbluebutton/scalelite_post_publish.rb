@@ -61,7 +61,8 @@ begin
 
   puts("Transferring recording archive to #{spool_dir}")
   system('rsync', '--verbose', '--protect-args', *extra_rsync_opts, archive_file, spool_dir) \
-    || raise('Failed to transfer recording archive')
+    || raise('Failed to transfer recording archive')  
 ensure
+  FileUtils.touch "#{work_dir}/#{meeting_id}/.copied"
   FileUtils.rm_f(archive_file)
 end
