@@ -54,6 +54,7 @@ archive_file = "#{work_dir}/#{meeting_id}.tar"
 begin
   puts('Creating recording archive')
   FileUtils.mkdir_p(work_dir)
+  FileUtils.mkdir_p("#{work_dir}/copied")
   FileUtils.cd(published_dir) do
     system('tar', '--create', '--file', archive_file, *format_dirs) \
       || raise('Failed to create recording archive')
@@ -64,9 +65,5 @@ begin
     || raise('Failed to transfer recording archive')  
 ensure
   FileUtils.rm_f(archive_file)
- format_dirs.each do |format_dir|
-  puts("Found recording format: #{format_dir}")
-  FileUtils.touch "#{published_dir}/#{format_dir}/.copied"
- end
-
+  FileUtils.touch "#{work_dir}/copied/#{meeting_id}"
 end
